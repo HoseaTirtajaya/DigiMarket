@@ -1,4 +1,5 @@
-pragma solidity ^0.5.0;
+// SPDX-License-Identifier: MIT
+pragma solidity >=0.4.22 ^0.8.9;
 
 contract Marketplace {
     string public name;
@@ -9,7 +10,7 @@ contract Marketplace {
         uint id;
         string name;
         uint price;
-        address payable owner;
+        address owner;
         bool purchased;
     }
 
@@ -17,7 +18,7 @@ contract Marketplace {
         uint id,
         string name,
         uint price,
-        address payable owner,
+        address owner,
         bool purchased
     );
 
@@ -25,12 +26,12 @@ contract Marketplace {
         uint id,
         string name,
         uint price,
-        address payable owner,
+        address owner,
         bool purchased
     );
 
     constructor() public {
-        name = "Dapp University Marketplace";
+        name = "DigiMarket";
     }
 
     function createProduct(string memory _name, uint _price) public {
@@ -50,7 +51,7 @@ contract Marketplace {
         // Fetch the product
         Product memory _product = products[_id];
         // Fetch the owner
-        address payable _seller = _product.owner;
+        address payable _seller = payable(_product.owner);
         // Make sure the product has a valid id
         require(_product.id > 0 && _product.id <= productCount);
         // Require that there is enough Ether in the transaction
@@ -66,7 +67,7 @@ contract Marketplace {
         // Update the product
         products[_id] = _product;
         // Pay the seller by sending them Ether
-        address(_seller).transfer(msg.value);
+        payable(_seller).transfer(msg.value);
         // Trigger an event
         emit ProductPurchased(productCount, _product.name, _product.price, msg.sender, true);
     }
