@@ -1,6 +1,7 @@
 import React, { useState } from "react"
 import { init } from "./Web3Client"
 import NavbarHome from "./components/NavbarHome";
+import TableProduct from "./components/TableProduct";
 
 function App() {
   let [AddressEth, setAddressEth] = useState("loading...");
@@ -15,7 +16,8 @@ function App() {
 
   return (
     <div className="App">
-      <NavbarHome></NavbarHome>
+      <NavbarHome addr={AddressEth}/>
+      <TableProduct/>
     </div>
   );
 }
