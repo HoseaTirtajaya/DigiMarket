@@ -1,6 +1,6 @@
-import './App.css';
 import React, { useState } from "react"
 import { init } from "./Web3Client"
+import NavbarHome from "./components/NavbarHome";
 
 function App() {
   let [AddressEth, setAddressEth] = useState("loading...");
@@ -15,7 +15,7 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Your account address is {AddressEth}</h1>
+      <NavbarHome></NavbarHome>
     </div>
   );
 }
