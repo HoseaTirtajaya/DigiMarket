@@ -13,8 +13,7 @@ export default function AddProductModal({show, handleClose}) {
           <Form.Group className="mb-3" controlId="product_name">
             <Form.Label>Item Name</Form.Label>
             <Form.Control
-              type="email"
-              placeholder="name@example.com"
+              placeholder="Steam Wallet Code IDR 120.000"
               autoFocus
             />
           </Form.Group>
@@ -22,7 +21,7 @@ export default function AddProductModal({show, handleClose}) {
             <Form.Label>Product Price</Form.Label>
             <Form.Control
               type="email"
-              placeholder="name@example.com"
+              placeholder="150000"
               autoFocus
             />
           </Form.Group>

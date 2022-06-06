@@ -1,4 +1,4 @@
-// import Web3 from "web3";
+import Web3 from "web3";
 // import MarketContract from "contracts/Market.json";
 
 let selectedAccount;
@@ -23,7 +23,11 @@ export const init = async () => {
 				console.log(err);
 				return;
 			});
-    }
+    } else if (window.web3) {
+		window.web3 = new Web3(window.web3.currentProvider)
+	} else {
+		console.log('Non-Ethereum browser detected. You should consider trying MetaMask!')
+	}
 
     // const web3 = new Web3(provider);
 
