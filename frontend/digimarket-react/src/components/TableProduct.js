@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Container, Table } from 'react-bootstrap'
+import { Container, Table, Alert, Button } from 'react-bootstrap'
 import { getProductData } from './Web3Client';
 
 
@@ -25,19 +25,21 @@ export default function TableProduct() {
               <th>Product Name</th>
               <th>Price</th>
               <th>Transaction Hash</th>
-              <th>Timestamps</th>
-              <th>Detail</th>
+              <th>Seller</th>
+              <th>Buyer</th>
+              <th>Buy Date</th>
               </tr>
           </thead>
           <tbody>
             {productData.map(item => { 
-              return <tr>
+              return <tr key={item.id}>
                 <td>{item.id}</td>
                 <td>{item.product_name}</td>
                 <td>{item.product_price}</td>
                 <td>-</td>
+                <td>{item.seller}</td>
+                <td>{item.status_buy === false ? "Available" : item.owner}</td>
                 <td>Timestamp</td>
-                <td>See Detail</td>
               </tr>
             })}
           </tbody>

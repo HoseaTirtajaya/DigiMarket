@@ -10,6 +10,7 @@ contract Marketplace {
         uint id;
         string name;
         uint price;
+        address seller;
         address owner;
         bool purchased;
     }
@@ -18,6 +19,7 @@ contract Marketplace {
         uint id,
         string name,
         uint price,
+        address seller,
         address owner,
         bool purchased
     );
@@ -26,13 +28,10 @@ contract Marketplace {
         uint id,
         string name,
         uint price,
+        address seller,
         address owner,
         bool purchased
     );
-
-    constructor() public {
-        name = "DigiMarket";
-    }
 
     function createProduct(string memory _name, uint _price) public {
         // Require a valid name
@@ -42,9 +41,9 @@ contract Marketplace {
         // Increment product count
         productCount ++;
         // Create the product
-        products[productCount] = Product(productCount, _name, _price, msg.sender, false);
+        products[productCount] = Product(productCount, _name, _price, msg.sender, msg.sender, false);
         // Trigger an event
-        emit ProductCreated(productCount, _name, _price, msg.sender, false);
+        emit ProductCreated(productCount, _name, _price, msg.sender, msg.sender, false);
     }
 
     function purchaseProduct(uint _id) public payable {
@@ -69,6 +68,6 @@ contract Marketplace {
         // Pay the seller by sending them Ether
         payable(_seller).transfer(msg.value);
         // Trigger an event
-        emit ProductPurchased(productCount, _product.name, _product.price, msg.sender, true);
+        emit ProductPurchased(productCount, _product.name, _product.price, _seller, msg.sender, true);
     }
 }

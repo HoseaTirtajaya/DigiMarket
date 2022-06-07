@@ -11,7 +11,6 @@ function App() {
     setAddressEth(address);
   }
 
-  console.log(AddressEth)
   web3Handler();
 
   return (

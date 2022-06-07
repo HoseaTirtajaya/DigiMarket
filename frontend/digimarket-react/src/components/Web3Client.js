@@ -49,6 +49,7 @@ export const getProductData = async () => {
 			id: product.id,
 			product_name: product.name,
 			owner: product.owner,
+			seller: product.seller,
 			product_price: product.price,
 			status_buy: product.purchased
 		});

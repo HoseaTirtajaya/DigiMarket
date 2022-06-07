@@ -1,18 +1,22 @@
-import React, { useRef } from 'react'
+import React, { useRef, useState} from 'react'
 import { Form, Modal, Button } from 'react-bootstrap';
 import { createProduct } from './Web3Client';
-
+import SuccessAlertModal from './SuccessAlertModal';
 
 
 export default function AddProductModal({show, handleClose, seller}) {
   let productName = useRef();
   let productPrice = useRef();
+  const [showAlertSuccess, setShowAlertSuccess] = useState(false)
+  let [responseTransaction, setResponseTransaction] = useState({});
 
   async function handleAddProduct(seller){
     const priceProduct = productPrice.current.value;
     const nameProduct = productName.current.value;
-    let productData = await createProduct(nameProduct, priceProduct, seller);
-    console.log(productData)
+    let productData = await createProduct(nameProduct, priceProduct, seller)
+    handleClose();
+    setShowAlertSuccess(true);
+    setResponseTransaction(productData)
     return productData;
   }
 
@@ -53,6 +57,7 @@ export default function AddProductModal({show, handleClose, seller}) {
         </Button>
       </Modal.Footer>
     </Modal>
+    <SuccessAlertModal show={showAlertSuccess} handleClose={() => {setShowAlertSuccess(false); window.location.reload()}} transaction={responseTransaction}/>
   </>
   )
 }
