@@ -22,7 +22,7 @@ export default function NavbarHome({addr}) {
           </Navbar.Collapse>
       </Container>
   </Navbar>
-  <AddProductModal show={showAddProductModal} handleClose={() => setShowAddProductModal(false)}/>
+  <AddProductModal show={showAddProductModal} handleClose={() => setShowAddProductModal(false)} seller={addr}/>
   </>
   )
 }
