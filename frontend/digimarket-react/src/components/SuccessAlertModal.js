@@ -9,7 +9,7 @@ export default function SuccessAlertModal({show, handleClose, transaction}) {
           <Modal.Title className="ms-auto" id='contained-modal-title-vcenter'>Transaction Success</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-            <b>Product has been succesfully created. Here's the detail about the product deployment details: </b> <br />
+            <b>Transaction has been successfully created. Transaction detail: </b> <br />
             <ul>
                 <li>Transaction Hash: {transaction.transactionHash}</li>
                 <br/>

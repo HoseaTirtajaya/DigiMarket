@@ -16,7 +16,7 @@ function App() {
   return (
     <div className="App">
       <NavbarHome addr={AddressEth}/>
-      <TableProduct/>
+      <TableProduct addr={AddressEth}/>
     </div>
   );
 }
