@@ -8,27 +8,33 @@ export default function AddProductModal({show, handleClose, seller}) {
   let productName = useRef();
   let productPrice = useRef();
   const [showAlertSuccess, setShowAlertSuccess] = useState(false);
-  // const [convertETH, setConvertETH] = useState([""]);
+  const [convertETH, setConvertETH] = useState(0);
   let [responseTransaction, setResponseTransaction] = useState({});
 
   async function handleAddProduct(seller){
     const priceProduct = productPrice.current.value;
     const nameProduct = productName.current.value;
-    let priceToEth = (priceProduct * 4e-8).toFixed(18);
-    console.log(priceToEth)
+    let priceToEth = (priceProduct * 3.8396e-8).toFixed(18);
     let priceToWei = Web3.utils.toWei(priceToEth.toString(), "ether")
     let productData = await createProduct(nameProduct, priceToWei, priceProduct, seller)
+                      .catch(err => {
+                        if(err){
+                          alert("Wrong price value or name value");
+                          window.location.reload();
+                        }
+                      });
     handleClose();
     setShowAlertSuccess(true);
     setResponseTransaction(productData)
     return productData;
   }
 
-  // function handleChangeConversion(i, event){
-  //   const values = [...convertETH];
-  //   values[i] = event.target.value;
-  //   setConvertETH(values);
-  // }
+  function handleChangeConversion(event){
+    event.preventDefault();
+    let idrValue = event.target.value;
+    let ethValue = idrValue * 3.8396e-8 
+    return setConvertETH(ethValue);
+  }
 
   return (
     <>
@@ -58,31 +64,28 @@ export default function AddProductModal({show, handleClose, seller}) {
               <input 
                 className='form-control'
                 type="number"
-                placeholder=""
+                placeholder="Amount in Rp."
                 min={0}
                 ref={productPrice}
+                onChange={(e) => handleChangeConversion(e)}
                 />
             </div>
           </Form.Group>
         </Form>
-        {/* {convertETH.map((item, idx) => {
-          return(
-            <div className='input-group'>
-                  <div className='input-group-append'>
-                    <span className='input-group-text'>
-                      ETH
-                    </span>
-                  </div>
-                  <input 
-                    className='form-control'
-                    type="number"
-                    placeholder="Please input IDR value"
-                    value={item || 0}
-                    onChange={(e) => handleChangeConversion(idx, e)}
-                    />
+        <div className='input-group'>
+              <div className='input-group-append'>
+                <span className='input-group-text'>
+                  ETH(Estimated)
+                </span>
               </div>
-          )
-        })} */}
+              <input 
+                className='form-control'
+                type="number"
+                placeholder="Please input IDR value"
+                value={convertETH || 0}
+                readOnly
+                />
+          </div>
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={handleClose}>

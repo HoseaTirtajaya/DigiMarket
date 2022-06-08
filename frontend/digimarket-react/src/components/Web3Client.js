@@ -67,9 +67,11 @@ export const createProduct = async (name, price, idrPrice, seller) => {
 	
 	marketContract = new web3.eth.Contract(Marketplace.abi, Marketplace.networks[networkId].address);
 	return marketContract.methods.createProduct(name, price, idrPrice).send({from: seller})
-	.once('receipt', (receipt) => {
-		return receipt;
-	})
+	.then(productData => {
+		return productData
+	}).catch(err => {
+		return err.message;
+	});
 }
 
 export const purchaseProduct = async (id, price, buyerAddr) => {
@@ -81,7 +83,9 @@ export const purchaseProduct = async (id, price, buyerAddr) => {
 	
 	marketContract = new web3.eth.Contract(Marketplace.abi, Marketplace.networks[networkId].address);
 	return marketContract.methods.purchaseProduct(id).send({from: buyerAddr, value: priceToWei})
-	.once('receipt', (receipt) => {
-		return receipt;
-	})
+	.then(productData => {
+		return productData
+	}).catch(err => {
+		return err.message;
+	});
 }
