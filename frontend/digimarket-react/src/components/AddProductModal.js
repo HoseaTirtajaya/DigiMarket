@@ -14,7 +14,8 @@ export default function AddProductModal({show, handleClose, seller}) {
   async function handleAddProduct(seller){
     const priceProduct = productPrice.current.value;
     const nameProduct = productName.current.value;
-    let priceToEth = priceProduct * 4e-8;
+    let priceToEth = (priceProduct * 4e-8).toFixed(18);
+    console.log(priceToEth)
     let priceToWei = Web3.utils.toWei(priceToEth.toString(), "ether")
     let productData = await createProduct(nameProduct, priceToWei, priceProduct, seller)
     handleClose();

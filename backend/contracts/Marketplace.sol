@@ -67,6 +67,8 @@ contract Marketplace {
         require(_seller != msg.sender);
         // Transfer ownership to the buyer
         _product.owner = msg.sender;
+        // Change the timestamp to now
+        _product.timestamp = block.timestamp;
         // Mark as purchased
         _product.purchased = true;
         // Update the product

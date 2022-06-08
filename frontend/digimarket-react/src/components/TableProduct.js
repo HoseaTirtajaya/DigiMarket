@@ -45,7 +45,6 @@ export default function TableProduct({addr}) {
                   let receipt = await purchaseProduct(item.id, event.target.value, addr);
                   setTransactionData(receipt);
                   setShowAlertSuccess(true);
-                  window.location.reload();
                 }}>Buy!</Button> :
                 <Button variant="secondary" disabled>Buy!
                 </Button>
@@ -54,7 +53,7 @@ export default function TableProduct({addr}) {
             })}
           </tbody>
       </Table>
-      <SuccessAlertModal show={showAlertSuccess} handleClose={() => setShowAlertSuccess(false)} transaction={transactionData}/>
+      <SuccessAlertModal show={showAlertSuccess} handleClose={() => {setShowAlertSuccess(false); window.location.reload();}} transaction={transactionData}/>
     </Container>
   )
 }
