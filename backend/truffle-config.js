@@ -1,3 +1,4 @@
+require('dotenv').config()
 /**
  * Use this file to configure your truffle project. It's seeded with some
  * common settings for different networks and features like migrations,
@@ -21,7 +22,8 @@
 const HDWalletProvider = require('@truffle/hdwallet-provider');
 //
 // const fs = require('fs');
-// const mnemonic = fs.readFileSync(".secret").toString().trim();
+const MNEMONIC = process.env.METAMASK_WALLET_SECRET;
+const INFURA_SECRET = process.env.INFURA_API_SECRET;
 
 module.exports = {
   /**
@@ -42,7 +44,7 @@ module.exports = {
     // options below to some value.
     //
     kovan: {
-      provider: () => new HDWalletProvider(MNEMONIC, `wss://kovan.infura.io/ws/v3/${process.env.INFURA_API_SECRET}`),
+      provider: () => new HDWalletProvider(MNEMONIC, `wss://kovan.infura.io/ws/v3/${process.env.INFURA_PROJECT_ID}`),
       network_id: "42",
       gas: 4000000,
       skipDryRun: true,
