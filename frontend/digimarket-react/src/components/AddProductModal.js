@@ -14,7 +14,7 @@ export default function AddProductModal({show, handleClose, seller}) {
   async function handleAddProduct(seller){
     const priceProduct = productPrice.current.value;
     const nameProduct = productName.current.value;
-    let priceToEth = (priceProduct * 3.8396e-8).toFixed(18);
+    let priceToEth = (priceProduct * 4.665454319592892e-8).toFixed(18);
     let priceToWei = Web3.utils.toWei(priceToEth.toString(), "ether")
     let productData = await createProduct(nameProduct, priceToWei, priceProduct, seller)
                       .catch(err => {
@@ -32,7 +32,7 @@ export default function AddProductModal({show, handleClose, seller}) {
   function handleChangeConversion(event){
     event.preventDefault();
     let idrValue = event.target.value;
-    let ethValue = idrValue * 3.8396e-8 
+    let ethValue = idrValue * 4.665454319592892e-8;
     return setConvertETH(ethValue);
   }
 
