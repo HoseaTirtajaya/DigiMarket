@@ -14,7 +14,10 @@ export default function AddProductModal({show, handleClose, seller}) {
   async function handleAddProduct(seller){
     const priceProduct = productPrice.current.value;
     const nameProduct = productName.current.value;
-    let priceToEth = (priceProduct * 4.665454319592892e-8).toFixed(18);
+    let fetchData = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=idr");
+    let priceToIDR = await fetchData.json();
+    let idrRate = 1 / priceToIDR.ethereum.idr;
+    let priceToEth = (priceProduct * idrRate).toFixed(25);
     let priceToWei = Web3.utils.toWei(priceToEth.toString(), "ether")
     let productData = await createProduct(nameProduct, priceToWei, priceProduct, seller)
                       .catch(err => {
@@ -29,10 +32,13 @@ export default function AddProductModal({show, handleClose, seller}) {
     return productData;
   }
 
-  function handleChangeConversion(event){
+  async function handleChangeConversion(event){
     event.preventDefault();
+    let fetchData = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=idr");
+    let priceToIDR = await fetchData.json();
+    let idrRate = 1 / priceToIDR.ethereum.idr;
     let idrValue = event.target.value;
-    let ethValue = idrValue * 4.665454319592892e-8;
+    let ethValue = (idrValue * idrRate).toFixed(25);
     return setConvertETH(ethValue);
   }
 

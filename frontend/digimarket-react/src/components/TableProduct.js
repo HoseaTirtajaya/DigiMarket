@@ -16,7 +16,7 @@ export default function TableProduct({addr}) {
   useEffect(() => {
     getTableData();
   },[]);
-
+  
   return (
     <Container className="mt-5">
       <Table striped bordered hover >
@@ -36,7 +36,7 @@ export default function TableProduct({addr}) {
               return <tr key={item.id}>
                 <td>{item.id}</td>
                 <td>{item.product_name}</td>
-                <td>{item.product_price} Eth(IDR {item.product_idr})</td>
+                <td>{item.product_price} Eth(IDR {})</td>
                 <td>{item.seller}</td>
                 <td>{item.status_buy === false ? "Available" : item.owner}</td>
                 <td>{item.timestamp}</td>
