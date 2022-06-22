@@ -44,6 +44,7 @@ export const getProductData = async () => {
         const product = await marketContract.methods.products(i).call();
 		let millis = parseFloat(product.timestamp) * 1000;
 		let productPrice = web3.utils.fromWei(product.price.toString(), "ether")
+		let ratioPrice = web3.utils.fromWei(product.ratio_price.toString(), "ether")
 		let product_time = new Date(millis).toLocaleString();
 		products.push({
 			id: product.id,
@@ -51,6 +52,7 @@ export const getProductData = async () => {
 			owner: product.owner,
 			seller: product.seller,
 			product_price: productPrice,
+			ratio_price: ratioPrice,
 			product_idr: product.idr_price,
 			status_buy: product.purchased,
 			timestamp: product_time
@@ -59,14 +61,14 @@ export const getProductData = async () => {
 	return products;
 }
 
-export const createProduct = async (name, price, idrPrice, seller) => {
+export const createProduct = async (name, price, idrPrice, ratio, seller) => {
 	let provider = window.ethereum;
 	let marketContract;
 	const web3 = new Web3(provider);
 	const networkId = await web3.eth.net.getId();
 	
 	marketContract = new web3.eth.Contract(Marketplace.abi, Marketplace.networks[networkId].address);
-	return marketContract.methods.createProduct(name, price, idrPrice).send({from: seller})
+	return marketContract.methods.createProduct(name, price, idrPrice, ratio).send({from: seller})
 	.then(productData => {
 		return productData
 	}).catch(err => {

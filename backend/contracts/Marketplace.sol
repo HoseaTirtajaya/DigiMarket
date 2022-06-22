@@ -11,6 +11,7 @@ contract Marketplace {
         string name;
         uint price;
         uint idr_price;
+        uint ratio_price;
         address seller;
         address owner;
         bool purchased;
@@ -22,6 +23,7 @@ contract Marketplace {
         string name,
         uint price,
         uint idr_price,
+        uint256 ratio_price,
         address seller,
         address owner,
         bool purchased,
@@ -33,13 +35,14 @@ contract Marketplace {
         string name,
         uint price,
         uint idr_price,
+        uint ratio_price,
         address seller,
         address owner,
         bool purchased,
         uint256 timestamp
     );
 
-    function createProduct(string memory _name, uint _price, uint _idrPrice) public {
+    function createProduct(string memory _name, uint _price, uint _idrPrice, uint _ratio) public {
         // Require a valid name
         require(bytes(_name).length > 0);
         // Require a valid price
@@ -47,9 +50,9 @@ contract Marketplace {
         // Increment product count
         productCount ++;
         // Create the product
-        products[productCount] = Product(productCount, _name, _price, _idrPrice, msg.sender, msg.sender, false, block.timestamp);
+        products[productCount] = Product(productCount, _name, _price, _idrPrice, _ratio, msg.sender, msg.sender, false, block.timestamp);
         // Trigger an event
-        emit ProductCreated(productCount, _name, _price, _idrPrice, msg.sender, msg.sender, false, block.timestamp);
+        emit ProductCreated(productCount, _name, _price, _idrPrice, _ratio, msg.sender, msg.sender, false, block.timestamp);
     }
 
     function purchaseProduct(uint _id) public payable {
@@ -76,6 +79,6 @@ contract Marketplace {
         // Pay the seller by sending them Ether
         payable(_seller).transfer(msg.value);
         // Trigger an event
-        emit ProductPurchased(productCount, _product.name, _product.price, _product.idr_price, _seller, msg.sender, true, block.timestamp);
+        emit ProductPurchased(productCount, _product.name, _product.price, _product.idr_price, _product.ratio_price, _seller, msg.sender, true, block.timestamp);
     }
 }

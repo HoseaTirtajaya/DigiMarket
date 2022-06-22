@@ -7,6 +7,7 @@ import Web3 from 'web3';
 export default function AddProductModal({show, handleClose, seller}) {
   let productName = useRef();
   let productPrice = useRef();
+  let ratioPrice = useRef();
   const [showAlertSuccess, setShowAlertSuccess] = useState(false);
   const [convertETH, setConvertETH] = useState(0);
   let [responseTransaction, setResponseTransaction] = useState({});
@@ -14,16 +15,17 @@ export default function AddProductModal({show, handleClose, seller}) {
   async function handleAddProduct(seller){
     const priceProduct = productPrice.current.value;
     const nameProduct = productName.current.value;
-    let fetchData = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=idr");
-    let priceToIDR = await fetchData.json();
-    let idrRate = 1 / priceToIDR.ethereum.idr;
-    let priceToEth = (priceProduct * idrRate).toFixed(25);
+    const ratioProduct = ratioPrice.current.value;
+    const fixedRatio = Number(ratioProduct).toFixed(18);
+    let priceToEth = Number(priceProduct * ratioProduct).toFixed(18);
     let priceToWei = Web3.utils.toWei(priceToEth.toString(), "ether")
-    let productData = await createProduct(nameProduct, priceToWei, priceProduct, seller)
+    let ratioToWei = Web3.utils.toWei(fixedRatio.toString(), "ether")
+    let productData = await createProduct(nameProduct, priceToWei, priceProduct, ratioToWei, seller)
                       .catch(err => {
+                        console.log(err)
                         if(err){
                           alert("Wrong price value or name value");
-                          window.location.reload();
+                          // window.location.reload();
                         }
                       });
     handleClose();
@@ -34,11 +36,8 @@ export default function AddProductModal({show, handleClose, seller}) {
 
   async function handleChangeConversion(event){
     event.preventDefault();
-    let fetchData = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=idr");
-    let priceToIDR = await fetchData.json();
-    let idrRate = 1 / priceToIDR.ethereum.idr;
     let idrValue = event.target.value;
-    let ethValue = (idrValue * idrRate).toFixed(25);
+    let ethValue = (idrValue * ratioPrice.current.value).toFixed(25);
     return setConvertETH(ethValue);
   }
 
@@ -54,9 +53,17 @@ export default function AddProductModal({show, handleClose, seller}) {
             <Form.Label>Item Name</Form.Label>
             <Form.Control
               type='text'
-              placeholder="Steam Wallet Code IDR 120.000"
+              placeholder="Paket Indomie 5 bungkus"
               autoFocus
               ref={productName}
+            />
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="product_name">
+            <Form.Label>Price Ratio(Ratio IDR to ETH can be viewed <a href='https://www.coinbase.com/converter/eth/idr' target="_blank" rel="noopener noreferrer">here</a>)</Form.Label>
+            <Form.Control
+              type='number'
+              placeholder="Ratio IDR to ETH"
+              ref={ratioPrice}
             />
           </Form.Group>
           <Form.Group className="mb-3" controlId="product_price">

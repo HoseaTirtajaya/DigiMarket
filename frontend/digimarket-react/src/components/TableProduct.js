@@ -25,6 +25,7 @@ export default function TableProduct({addr}) {
               <th>No.</th>
               <th>Product Name</th>
               <th>Price</th>
+              <th>Ratio</th>
               <th>Seller</th>
               <th>Buyer</th>
               <th>Timestamp</th>
@@ -36,7 +37,8 @@ export default function TableProduct({addr}) {
               return <tr key={item.id}>
                 <td>{item.id}</td>
                 <td>{item.product_name}</td>
-                <td>{item.product_price} Eth(IDR {})</td>
+                <td>{item.product_price} Eth(IDR {item.product_idr})</td>
+                <td>{item.ratio_price}</td>
                 <td>{item.seller}</td>
                 <td>{item.status_buy === false ? "Available" : item.owner}</td>
                 <td>{item.timestamp}</td>
