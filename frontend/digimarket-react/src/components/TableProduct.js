@@ -17,6 +17,7 @@ export default function TableProduct({addr}) {
     getTableData();
   },[]);
   
+  console.log(productData)
   return (
     <Container className="mt-5">
       <Table striped bordered hover >
@@ -24,6 +25,7 @@ export default function TableProduct({addr}) {
               <tr>
               <th>No.</th>
               <th>Product Name</th>
+              <th>Product Description</th>
               <th>Price</th>
               <th>Ratio</th>
               <th>Seller</th>
@@ -37,6 +39,7 @@ export default function TableProduct({addr}) {
               return <tr key={item.id}>
                 <td>{item.id}</td>
                 <td>{item.product_name}</td>
+                <td>{item.product_desc}</td>
                 <td>{item.product_price} Eth(IDR {item.product_idr})</td>
                 <td>{item.ratio_price}</td>
                 <td>{item.seller}</td>

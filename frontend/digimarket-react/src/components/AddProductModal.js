@@ -6,6 +6,7 @@ import Web3 from 'web3';
 
 export default function AddProductModal({show, handleClose, seller}) {
   let productName = useRef();
+  let productDesc = useRef();
   let productPrice = useRef();
   let ratioPrice = useRef();
   const [showAlertSuccess, setShowAlertSuccess] = useState(false);
@@ -16,11 +17,12 @@ export default function AddProductModal({show, handleClose, seller}) {
     const priceProduct = productPrice.current.value;
     const nameProduct = productName.current.value;
     const ratioProduct = ratioPrice.current.value;
+    const descProduct = productDesc.current.value;
     const fixedRatio = Number(ratioProduct).toFixed(18);
     let priceToEth = Number(priceProduct * ratioProduct).toFixed(18);
     let priceToWei = Web3.utils.toWei(priceToEth.toString(), "ether")
     let ratioToWei = Web3.utils.toWei(fixedRatio.toString(), "ether")
-    let productData = await createProduct(nameProduct, priceToWei, priceProduct, ratioToWei, seller)
+    let productData = await createProduct(nameProduct, descProduct, priceToWei, priceProduct, ratioToWei, seller)
                       .catch(err => {
                         console.log(err)
                         if(err){
@@ -50,24 +52,24 @@ export default function AddProductModal({show, handleClose, seller}) {
       <Modal.Body>
         <Form onSubmit={handleAddProduct}>
           <Form.Group className="mb-3" controlId="product_name">
-            <Form.Label>Item Name</Form.Label>
+            <Form.Label>Nama produk</Form.Label>
             <Form.Control
               type='text'
-              placeholder="Paket Indomie 5 bungkus"
+              placeholder="Nama produk"
               autoFocus
               ref={productName}
             />
           </Form.Group>
-          <Form.Group className="mb-3" controlId="product_name">
-            <Form.Label>Price Ratio(Ratio IDR to ETH can be viewed <a href='https://www.coinbase.com/converter/eth/idr' target="_blank" rel="noopener noreferrer">here</a>)</Form.Label>
+          <Form.Group className="mb-3" controlId="product_ratio">
+            <Form.Label>Rasio Harga(Ratio IDR to ETH can be viewed <a href='https://www.coinbase.com/converter/eth/idr' target="_blank" rel="noopener noreferrer">here</a>)</Form.Label>
             <Form.Control
               type='number'
-              placeholder="Ratio IDR to ETH"
+              placeholder="Ratio IDR ke ETH"
               ref={ratioPrice}
             />
           </Form.Group>
           <Form.Group className="mb-3" controlId="product_price">
-            <Form.Label>Product Price</Form.Label>
+            <Form.Label>Harga Produk</Form.Label>
             <div className='input-group'>
               <div className='input-group-append'>
                 <span className='input-group-text'>
@@ -99,6 +101,16 @@ export default function AddProductModal({show, handleClose, seller}) {
                 readOnly
                 />
           </div>
+        <Form.Group className="mb-3 mt-3" controlId="exampleForm.ControlTextarea1">
+          <Form.Label>Deskripsi produk(Max 800 characters)</Form.Label>
+          <Form.Control
+            as='textarea'
+            placeholder="Deskripsi produk"
+            ref={productDesc}
+            rows={3}
+            maxLength="800"
+          />
+        </Form.Group>
       </Modal.Body>
       <Modal.Footer>
         <Button variant="secondary" onClick={handleClose}>
