@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { Container, Table, Button } from 'react-bootstrap'
+import ReadMoreModal from './ReadMoreModal';
 import SuccessAlertModal from './SuccessAlertModal';
 import { getProductData, purchaseProduct } from './Web3Client';
 
 export default function TableProduct({addr}) {
   let [productData, setProductData] = useState([]);
   let [transactionData, setTransactionData] = useState({});
+  let [descriptionData, setDescriptionData] = useState("");
+  const [showReadMore, setShowReadMore] = useState(false);
   const [showAlertSuccess, setShowAlertSuccess] = useState(false);
 
   async function getTableData(){
@@ -13,14 +16,18 @@ export default function TableProduct({addr}) {
     setProductData(products);
   }
 
+  function viewDescription(desc){
+    setShowReadMore(true);
+    return setDescriptionData(desc);
+  }
+
   useEffect(() => {
     getTableData();
   },[]);
   
-  console.log(productData)
   return (
     <Container className="mt-5">
-      <Table striped bordered hover >
+      <Table striped bordered hover size='lg'>
           <thead>
               <tr>
               <th>No.</th>
@@ -39,7 +46,7 @@ export default function TableProduct({addr}) {
               return <tr key={item.id}>
                 <td>{item.id}</td>
                 <td>{item.product_name}</td>
-                <td>{item.product_desc}</td>
+                <td><Button variant="success" size='sm' onClick={() => viewDescription(item.product_desc)}>Lihat Deskripsi</Button></td>
                 <td>{item.product_price} Eth(IDR {item.product_idr})</td>
                 <td>{item.ratio_price}</td>
                 <td>{item.seller}</td>
@@ -59,6 +66,7 @@ export default function TableProduct({addr}) {
           </tbody>
       </Table>
       <SuccessAlertModal show={showAlertSuccess} handleClose={() => {setShowAlertSuccess(false); window.location.reload();}} transaction={transactionData}/>
+      <ReadMoreModal show={showReadMore} handleClose={() => setShowReadMore(false)} desc={descriptionData}/>
     </Container>
   )
 }
