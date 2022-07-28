@@ -22,7 +22,8 @@ require('dotenv').config()
 const HDWalletProvider = require('@truffle/hdwallet-provider');
 //
 // const fs = require('fs');
-const MNEMONIC = process.env.METAMASK_WALLET_SECRET;
+const METAMASK_SECRET = process.env.METAMASK_WALLET_SECRET;
+
 const INFURA_SECRET = process.env.INFURA_API_SECRET;
 
 module.exports = {
@@ -44,8 +45,20 @@ module.exports = {
     // options below to some value.
     //
     kovan: {
-      provider: () => new HDWalletProvider(MNEMONIC, `wss://kovan.infura.io/ws/v3/${process.env.INFURA_PROJECT_ID}`),
+      provider: () => new HDWalletProvider(METAMASK_SECRET, `wss://kovan.infura.io/ws/v3/${process.env.INFURA_PROJECT_ID}`),
       network_id: "42",
+      gas: 4000000,
+      skipDryRun: true,
+    },
+    rinkeby: {
+      provider: () => new HDWalletProvider(METAMASK_SECRET, `wss://rinkeby.infura.io/ws/v3/${process.env.INFURA_PROJECT_ID}`),
+      network_id: "4",
+      gas: 4000000,
+      skipDryRun: true,
+    },
+    ropsten: {
+      provider: () => new HDWalletProvider(METAMASK_SECRET, `wss://ropsten.infura.io/ws/v3/${process.env.INFURA_PROJECT_ID}`),
+      network_id: "3",
       gas: 4000000,
       skipDryRun: true,
     },
