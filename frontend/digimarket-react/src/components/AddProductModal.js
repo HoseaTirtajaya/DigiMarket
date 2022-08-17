@@ -9,6 +9,7 @@ export default function AddProductModal({show, handleClose, seller}) {
   let productDesc = useRef();
   let productPrice = useRef();
   let ratioPrice = useRef();
+  let qtyProduct = useRef();
   const [showAlertSuccess, setShowAlertSuccess] = useState(false);
   const [convertETH, setConvertETH] = useState(0);
   let [responseTransaction, setResponseTransaction] = useState({});
@@ -16,13 +17,14 @@ export default function AddProductModal({show, handleClose, seller}) {
   async function handleAddProduct(seller){
     const priceProduct = productPrice.current.value;
     const nameProduct = productName.current.value;
+    const quantityProduct = qtyProduct.current.value;
     const ratioProduct = ratioPrice.current.value;
     const descProduct = productDesc.current.value;
     const fixedRatio = Number(ratioProduct).toFixed(18);
     let priceToEth = Number(priceProduct * ratioProduct).toFixed(18);
     let priceToWei = Web3.utils.toWei(priceToEth.toString(), "ether")
     let ratioToWei = Web3.utils.toWei(fixedRatio.toString(), "ether")
-    let productData = await createProduct(nameProduct, descProduct, priceToWei, priceProduct, ratioToWei, seller)
+    let productData = await createProduct(nameProduct, descProduct, priceToWei, quantityProduct, priceProduct, ratioToWei, seller)
                       .catch(err => {
                         console.log(err)
                         if(err){
@@ -58,6 +60,14 @@ export default function AddProductModal({show, handleClose, seller}) {
               placeholder="Nama produk"
               autoFocus
               ref={productName}
+            />
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="product_qty">
+            <Form.Label>Quantity</Form.Label>
+            <Form.Control
+              type='number'
+              placeholder="Product Quantity"
+              ref={qtyProduct}
             />
           </Form.Group>
           <Form.Group className="mb-3" controlId="product_ratio">

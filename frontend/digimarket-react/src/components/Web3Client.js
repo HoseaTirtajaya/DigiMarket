@@ -54,6 +54,7 @@ export const getProductData = async () => {
 			seller: product.seller,
 			product_price: productPrice,
 			ratio_price: ratioPrice,
+			qty: product.qty,
 			product_idr: product.idr_price,
 			status_buy: product.purchased,
 			timestamp: product_time
@@ -62,14 +63,14 @@ export const getProductData = async () => {
 	return products;
 }
 
-export const createProduct = async (name, descProduct, price, idrPrice, ratio, seller) => {
+export const createProduct = async (name, descProduct, price, qty, idrPrice, ratio, seller) => {
 	let provider = window.ethereum;
 	let marketContract;
 	const web3 = new Web3(provider);
 	const networkId = await web3.eth.net.getId();
 	
 	marketContract = new web3.eth.Contract(Marketplace.abi, Marketplace.networks[networkId].address);
-	return marketContract.methods.createProduct(name, descProduct, price, idrPrice, ratio).send({from: seller})
+	return marketContract.methods.createProduct(name, descProduct, price, qty, idrPrice, ratio).send({from: seller})
 	.then(productData => {
 		return productData
 	}).catch(err => {

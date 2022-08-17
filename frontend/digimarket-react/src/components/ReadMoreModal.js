@@ -6,7 +6,7 @@ export default function ReadMoreModal({show, handleClose, desc}) {
       <>
         <Modal show={show} onHide={handleClose} size="lg" aria-labelledby="contained-modal-title-vcenter" centered>
           <Modal.Header closeButton>
-            <Modal.Title className="ms-auto" id='contained-modal-title-vcenter'>Deskripsi Produk</Modal.Title>
+            <Modal.Title className="ms-auto" id='contained-modal-title-vcenter'>Detail Produk</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             { desc }
